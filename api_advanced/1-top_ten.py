@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 """Query the Reddit API and print the top ten hot post titles."""
-import time
-
 import requests
+import time
 
 
 def top_ten(subreddit):
