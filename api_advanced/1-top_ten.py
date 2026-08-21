@@ -10,7 +10,7 @@ def top_ten(subreddit):
         subreddit (str): the name of the subreddit.
     """
     url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
-    headers = {"User-Agent": "alche_api_advanced:v1.0 (by /u/jacintangugi)"}
+    headers = {"User-Agent": "Mozilla/5.0"}
     params = {"limit": 10}
     response = requests.get(
         url, headers=headers, params=params, allow_redirects=False)
