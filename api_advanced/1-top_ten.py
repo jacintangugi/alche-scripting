@@ -9,25 +9,29 @@ def top_ten(subreddit):
     Args:
         subreddit (str): the name of the subreddit.
     """
-    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
     headers = {"User-Agent": "alche_api_advanced:v1.0 (by /u/jacintangugi)"}
     params = {"limit": 10}
-    response = requests.get(
-        url, headers=headers, params=params, allow_redirects=False)
 
-    if response.status_code != 200:
-        print(None)
-        return
+    for domain in ("https://www.reddit.com", "https://old.reddit.com"):
+        url = "{}/r/{}/hot.json".format(domain, subreddit)
+        try:
+            response = requests.get(
+                url, headers=headers, params=params,
+                allow_redirects=False, timeout=10)
+        except requests.exceptions.RequestException:
+            continue
 
-    try:
-        posts = response.json().get("data", {}).get("children", [])
-    except ValueError:
-        print(None)
-        return
+        if response.status_code != 200:
+            continue
 
-    if not posts:
-        print(None)
-        return
+        try:
+            posts = response.json().get("data", {}).get("children", [])
+        except ValueError:
+            continue
 
-    for post in posts:
-        print(post.get("data", {}).get("title"))
+        if posts:
+            for post in posts:
+                print(post.get("data", {}).get("title"))
+            return
+
+    print(None)
